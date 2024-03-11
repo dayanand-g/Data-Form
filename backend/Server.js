@@ -21,30 +21,12 @@ db.connect((err) => {
     console.log('Connected to MySQL database as ID ' + db.threadId);
 });
 
-// Vercel DB
-// const pool = mysql.createPool({
-//     host: process.env.DB_HOST,
-//     user: process.env.DB_USERNAME,
-//     password: process.env.DB_PASSWORD,
-//     database: process.env.DB_DBNAME,
-//     waitForConnections: true,
-//     connectionLimit: 10,
-//     queueLimit: 0
-// });
-
-// pool.getConnection((err,conn) => {
-//     if(err) console.log(err)
-//     console.log("connected successfuly")
-// })
-
 app.get("/", (req,res) => {
     res.send("Server is runnig")
 })
 
 // Route for signup page
 app.post('/signup', (req, res) => {
-    console.log("/signup hit------");
-    console.log("req body-------", req.body);
     const sql = "INSERT INTO signup (`name`,`email`,`password`) VALUES (?, ?, ?)";
     const values = [
         req.body.name,
@@ -63,8 +45,6 @@ app.post('/signup', (req, res) => {
 
 // Route for Login page
 app.post('/login', (req, res) => {
-    console.log("/login hit------");
-    console.log("req body-------", req.body);
     const sql = "SELECT * FROM signup WHERE `email` = ? AND `password` = ?";
     db.query(sql, [req.body.email, req.body.password], (err, result) => {
         if (err) {
@@ -82,8 +62,6 @@ app.post('/login', (req, res) => {
 
 // Route for Home page
 app.post('/home', (req, res) => {
-    console.log("/home hit------");
-    console.log("req body-------", req.body);
     const sql = "INSERT INTO home (`name`, `surname`, `age`, `dob`, `email`) VALUES (?, ?, ?, ?, ?)";
     const values = [
         req.body.name,

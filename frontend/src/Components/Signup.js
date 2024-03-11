@@ -21,17 +21,22 @@ function Signup() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setErrors(Validation(formData));
-        try {
-                const response = await axios.post('https://data-form-chi.vercel.app/signup', formData, {
+        if(formData.name.trim() === "" || formData.email.trim() === "" || formData.password.trim() === "") {
+            alert("Requierd fields are missing")
+        }
+        else {
+            try {
+                const response = await axios.post('https://data-form-aa3n.onrender.com/signup', formData, {
                     headers: {
                         'Content-Type': 'application/json'
                     }
                 });
                 console.log(response.data);
                 navigate('/login')
-        } catch (error) {
-            console.error('Error:', error.response.data);
-        }
+            } catch (error) {
+                console.error('Error:', error.response.data);
+            }
+        } 
     };
 
   return (

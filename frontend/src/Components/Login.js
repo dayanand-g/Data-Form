@@ -21,20 +21,24 @@ function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setErrors(validation(formData));
-        try {
-                const response = await axios.post('https://data-form-chi.vercel.app/login', formData, {
+        if(formData.email.trim() === "" || formData.password.trim() === "") {
+            alert("Requierd fields are missing")
+        }
+        else {
+            try {
+                const response = await axios.post('https://data-form-aa3n.onrender.com/login', formData, {
                     headers: {
                         'Content-Type': 'application/json'
                     }
                 });
-                console.log(response.data,'res------------');
                 if(response.data === "Success") {
                     navigate('/home')   
                 } else {
                     alert("Record Not Found")
                 }
-        } catch (error) {
-            console.error('Error:', error.response.data);
+            } catch (error) {
+                console.error('Error:', error.response.data);
+            }
         }
     };
 
