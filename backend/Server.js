@@ -7,20 +7,36 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const db = mysql.createConnection({
-    host: "localhost",
-    user: "daya",
-    password: "password",
-    database: "survey"
+// const db = mysql.createConnection({
+//     host: "localhost",
+//     user: "daya",
+//     password: "password",
+//     database: "survey"
+// });
+
+// db.connect((err) => {
+//     if (err) {
+//         console.error('Error connecting to MySQL database: ' + err.stack);
+//         return;
+//     }
+//     console.log('Connected to MySQL database as ID ' + db.threadId);
+// });
+
+// Vercel DB
+const pool = mysql.createPool({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DBNAME,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
 });
 
-db.connect((err) => {
-    if (err) {
-        console.error('Error connecting to MySQL database: ' + err.stack);
-        return;
-    }
-    console.log('Connected to MySQL database as ID ' + db.threadId);
-});
+pool.getConnection((err,conn) => {
+    if(err) console.log(err)
+    console.log("connected successfuly")
+})
 
 // Route for signup page
 app.post('/signup', (req, res) => {
@@ -91,3 +107,4 @@ app.listen(8081, () => {
     console.log("Server is listening on port 8081");
 });
 
+module.exports = pool.promise()
