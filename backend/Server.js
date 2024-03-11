@@ -1,51 +1,52 @@
 const express = require("express");
 const mysql = require('mysql');
 const cors = require('cors');
-const { v4: uuidv4 } = require('uuid');
 
 const app = express();
-app.use(cors());
 app.use(express.json());
+app.use(cors());
 
-// const db = mysql.createConnection({
-//     host: "localhost",
-//     user: "daya",
-//     password: "password",
-//     database: "survey"
-// });
-
-// db.connect((err) => {
-//     if (err) {
-//         console.error('Error connecting to MySQL database: ' + err.stack);
-//         return;
-//     }
-//     console.log('Connected to MySQL database as ID ' + db.threadId);
-// });
-
-// Vercel DB
-const pool = mysql.createPool({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DBNAME,
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0
+const db = mysql.createConnection({
+    host: "bb91ape4lioacaeo0rri-mysql.services.clever-cloud.com",
+    user: "u9jebv8sh7aq0rpj",
+    password: "7ZUAyCZnXTAA3iPi0JAu",
+    database: "bb91ape4lioacaeo0rri"
 });
 
-pool.getConnection((err,conn) => {
-    if(err) console.log(err)
-    console.log("connected successfuly")
+db.connect((err) => {
+    if (err) {
+        console.error('Error connecting to MySQL database: ' + err.stack);
+        return;
+    }
+    console.log('Connected to MySQL database as ID ' + db.threadId);
+});
+
+// Vercel DB
+// const pool = mysql.createPool({
+//     host: process.env.DB_HOST,
+//     user: process.env.DB_USERNAME,
+//     password: process.env.DB_PASSWORD,
+//     database: process.env.DB_DBNAME,
+//     waitForConnections: true,
+//     connectionLimit: 10,
+//     queueLimit: 0
+// });
+
+// pool.getConnection((err,conn) => {
+//     if(err) console.log(err)
+//     console.log("connected successfuly")
+// })
+
+app.get("/", (req,res) => {
+    res.send("Server is runnig")
 })
 
 // Route for signup page
 app.post('/signup', (req, res) => {
     console.log("/signup hit------");
     console.log("req body-------", req.body);
-    const sql = "INSERT INTO signup (`id`, `name`,`email`,`password`) VALUES (?, ?, ?, ?)";
-    const id = uuidv4();
+    const sql = "INSERT INTO signup (`name`,`email`,`password`) VALUES (?, ?, ?)";
     const values = [
-        id,
         req.body.name,
         req.body.email,
         req.body.password
@@ -83,10 +84,8 @@ app.post('/login', (req, res) => {
 app.post('/home', (req, res) => {
     console.log("/home hit------");
     console.log("req body-------", req.body);
-    const sql = "INSERT INTO home (`id`, `name`, `surname`, `age`, `dob`, `email`) VALUES (?, ?, ?, ?, ?, ?)";
-    const id = uuidv4();
+    const sql = "INSERT INTO home (`name`, `surname`, `age`, `dob`, `email`) VALUES (?, ?, ?, ?, ?)";
     const values = [
-        id,
         req.body.name,
         req.body.surname,
         req.body.age,
@@ -103,10 +102,7 @@ app.post('/home', (req, res) => {
     });
 });
 
-app.use("/", (req,res) => {
-    res.send("Server is runnig")
-})
 
 app.listen(5000, console.log("Server is listening on port 5000"));
 
-module.exports = pool.promise()
+// module.exports = pool.promise()
