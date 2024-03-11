@@ -22,7 +22,7 @@ function Home() {
         e.preventDefault();
         setErrors(Validation(formData));
         try {
-                const response = await axios.post('http://localhost:5000/home', formData, {
+                const response = await axios.post('https://data-form-chi.vercel.app/home', formData, {
                     headers: {
                         'Content-Type': 'application/json'
                     }
